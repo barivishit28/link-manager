@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Link Manager</title>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-badge {
+      width: 50px;
+      height: 50px;
+      background-color: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818cf8;
+      border-radius: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .logo-badge svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.25rem;
+    }
+
+    p.subtitle {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.7);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #e2e8f0;
+    }
+
+    .card-title .icon-wrap {
+      color: #818cf8;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .input-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+      color: #f8fafc;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-field:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .input-field.error-border {
+      border-color: #f43f5e;
+    }
+
+    .error-text {
+      color: #fb7185;
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+      display: none;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.75rem 1.25rem;
+      background-color: #4f46e5;
+      color: #ffffff;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: #4338ca;
+      transform: translateY(-1px);
+    }
+
+    .links-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .links-header {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .counter-badge {
+      background-color: #334155;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 9999px;
+      margin-left: 0.35rem;
+    }
+
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    @media (min-width: 640px) {
+      .search-wrapper {
+        width: 220px;
+      }
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 0.85rem 0.5rem 2.25rem;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+      color: #f8fafc;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: #6366f1;
+    }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .link-item {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 0.85rem;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .link-item:hover {
+      border-color: #475569;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .link-info {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .favicon-box {
+      width: 38px;
+      height: 38px;
+      background-color: #0f172a;
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      color: #818cf8;
+    }
+
+    .favicon-img {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+    }
+
+    .link-details {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .link-title-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-url-text {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .link-url-text:hover {
+      color: #818cf8;
+    }
+
+    .action-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .btn-copy {
+      padding: 0.45rem 0.85rem;
+      background-color: #334155;
+      color: #e2e8f0;
+      border: 1px solid #475569;
+      border-radius: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy:hover {
+      background-color: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      border-color: #6366f1;
+    }
+
+    .btn-copy.copied {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border-color: #10b981;
+    }
+
+    .btn-delete {
+      padding: 0.45rem;
+      background-color: transparent;
+      color: #64748b;
+      border: 1px solid transparent;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+      color: #fb7185;
+      background-color: rgba(244, 63, 94, 0.1);
+      border-color: rgba(244, 63, 94, 0.2);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #64748b;
+      border: 2px dashed #334155;
+      border-radius: 0.85rem;
+      font-size: 0.9rem;
+    }
+
+    .empty-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header -->
+    <header>
+      <div class="logo-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </div>
+      <h1>Link Manager</h1>
+      <p class="subtitle">Store, search, and copy your essential links easily.</p>
+    </header>
+
+    <!-- Add Link Card -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon-wrap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </span>
+        Add New Link
+      </div>
+
+      <form id="add-link-form">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="url-input">Website URL *</label>
+            <input type="text" id="url-input" class="input-field" placeholder="https://example.com" />
+          </div>
+
+          <div class="input-group">
+            <label for="title-input">Title (Optional)</label>
+            <input type="text" id="title-input" class="input-field" placeholder="My Favorite Site" />
+          </div>
+        </div>
+
+        <div id="error-msg" class="error-text"></div>
+
+        <button type="submit" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add Link
+        </button>
+      </form>
+    </div>
+
+    <!-- Saved Links Card -->
+    <div class="card">
+      <div class="links-header">
+        <div class="card-title" style="margin-bottom: 0;">
+          Saved Links
+          <span id="counter-badge" class="counter-badge">0</span>
+        </div>
+
+        <div id="search-wrapper" class="search-wrapper" style="display: none;">
+          <span class="search-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input type="text" id="search-input" class="search-input" placeholder="Search links..." />
+        </div>
+      </div>
+
+      <div id="link-list" class="link-list"></div>
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">🔗</div>
+        <p id="empty-text">No links saved yet. Add your first link using the form above!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- Application State ---
+    let links = [];
+    let searchQuery = '';
+
+    // --- DOM Selectors ---
+    const form = document.getElementById('add-link-form');
+    const urlInput = document.getElementById('url-input');
+    const titleInput = document.getElementById('title-input');
+    const errorMsg = document.getElementById('error-msg');
+    const linkListContainer = document.getElementById('link-list');
+    const emptyState = document.getElementById('empty-state');
+    const emptyText = document.getElementById('empty-text');
+    const counterBadge = document.getElementById('counter-badge');
+    const searchWrapper = document.getElementById('search-wrapper');
+    const searchInput = document.getElementById('search-input');
+
+    // --- Helper Functions ---
+    const STORAGE_KEY = 'vanilla_html_link_keeper';
+
+    function loadLinksFromStorage() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error('Failed to parse localStorage links', e);
+        }
+      }
+      return [
+        { id: '1', title: 'React Documentation', url: 'https://react.dev' },
+        { id: '2', title: 'MDN Web Docs', url: 'https://developer.mozilla.org' },
+        { id: '3', title: 'GitHub Repository', url: 'https://github.com' }
+      ];
+    }
+
+    function saveLinksToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
+    }
+
+    function isValidUrl(string) {
+      try {
+        const formatted = string.startsWith('http://') || string.startsWith('https://')
+          ? string
+          : `https://${string}`;
+        new URL(formatted);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function formatUrl(string) {
+      if (!string.startsWith('http://') && !string.startsWith('https://')) {
+        return `https://${string}`;
+      }
+      return string;
+    }
+
+    function getFaviconUrl(url) {
+      try {
+        const domain = new URL(url).hostname;
+        return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+      } catch {
+        return null;
+      }
+    }
+
+    // --- Render Logic ---
+    function render() {
+      counterBadge.textContent = links.length;
+
+      if (links.length > 0) {
+        searchWrapper.style.display = 'block';
+      } else {
+        searchWrapper.style.display = 'none';
+      }
+
+      const filteredLinks = links.filter(link =>
+        link.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        link.url.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      linkListContainer.innerHTML = '';
+
+      if (filteredLinks.length === 0) {
+        emptyState.style.display = 'block';
+        emptyText.textContent = links.length === 0
+          ? 'No links saved yet. Add your first link using the form above!'
+          : 'No matching links found.';
+      } else {
+        emptyState.style.display = 'none';
+
+        filteredLinks.forEach(link => {
+          const faviconSrc = getFaviconUrl(link.url);
+
+          const linkItem = document.createElement('div');
+          linkItem.className = 'link-item';
+
+          linkItem.innerHTML = `
+            <div class="link-info">
+              <div class="favicon-box">
+                ${faviconSrc 
+                  ? `<img src="${faviconSrc}" class="favicon-img" alt="" onerror="this.style.display='none'" />` 
+                  : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg>`
+                }
+              </div>
+              <div class="link-details">
+                <span class="link-title-text">${escapeHtml(link.title)}</span>
+                <a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer" class="link-url-text">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(link.url)}</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+            <div class="action-group">
+              <button class="btn-copy" data-id="${link.id}" data-url="${escapeHtml(link.url)}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copy
+              </button>
+              <button class="btn-delete" data-id="${link.id}" title="Delete link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
+            </div>
+          `;
+
+          linkListContainer.appendChild(linkItem);
+        });
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        }[m];
+      });
+    }
+
+    // --- Action Handlers ---
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      showError('');
+
+      const rawUrl = urlInput.value.trim();
+      const rawTitle = titleInput.value.trim();
+
+      if (!rawUrl) {
+        showError('Please enter a website URL.');
+        return;
+      }
+
+      if (!isValidUrl(rawUrl)) {
+        showError('Please enter a valid URL (e.g., example.com or https://example.com)');
+        return;
+      }
+
+      const formattedUrl = formatUrl(rawUrl);
+      let finalTitle = rawTitle;
+
+      if (!finalTitle) {
+        try {
+          const parsed = new URL(formattedUrl);
+          finalTitle = parsed.hostname.replace('www.', '');
+        } catch {
+          finalTitle = formattedUrl;
+        }
+      }
+
+      const newLink = {
+        id: Date.now().toString(),
+        title: finalTitle,
+        url: formattedUrl
+      };
+
+      links.unshift(newLink);
+      saveLinksToStorage();
+      render();
+
+      urlInput.value = '';
+      titleInput.value = '';
+    });
+
+    urlInput.addEventListener('input', function() {
+      if (errorMsg.style.display === 'block') {
+        showError('');
+      }
+    });
+
+    searchInput.addEventListener('input', function(e) {
+      searchQuery = e.target.value;
+      render();
+    });
+
+    linkListContainer.addEventListener('click', function(e) {
+      const copyBtn = e.target.closest('.btn-copy');
+      const deleteBtn = e.target.closest('.btn-delete');
+
+      if (copyBtn) {
+        const url = copyBtn.getAttribute('data-url');
+        handleCopy(copyBtn, url);
+      } else if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        handleDelete(id);
+      }
+    });
+
+    function handleCopy(button, textToCopy) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        setCopySuccess(button);
+      }).catch(() => {
+        // Fallback copy method
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        setCopySuccess(button);
+      });
+    }
+
+    function setCopySuccess(button) {
+      button.classList.add('copied');
+      button.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Copied!
+      `;
+      setTimeout(() => {
+        button.classList.remove('copied');
+        button.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy
+        `;
+      }, 2000);
+    }
+
+    function handleDelete(id) {
+      links = links.filter(link => link.id !== id);
+      saveLinksToStorage();
+      render();
+    }
+
+    function showError(msg) {
+      if (msg) {
+        errorMsg.textContent = msg;
+        errorMsg.style.display = 'block';
+        urlInput.classList.add('error-border');
+      } else {
+        errorMsg.textContent = '';
+        errorMsg.style.display = 'none';
+        urlInput.classList.remove('error-border');
+      }
+    }
+
+    // --- Initialize ---
+    window.onload = function() {
+      links = loadLinksFromStorage();
+      render();
+    };
+  </script>
+</body>
+</html>
