@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manager</title>
+  <title>Text Keeper</title>
   
   <style>
     * {
@@ -20,12 +20,12 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 1.5rem 1rem;
+      padding: 2rem 1rem;
     }
 
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 680px;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
@@ -41,9 +41,9 @@
     }
 
     .card-title {
-      font-size: 0.95rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       display: flex;
       align-items: center;
       gap: 0.4rem;
@@ -52,52 +52,30 @@
       letter-spacing: 0.05em;
     }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.85rem;
-      margin-bottom: 1rem;
-    }
-
-    @media (min-width: 768px) {
-      .form-grid {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-    }
-
     .input-group {
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
-    }
-
-    .input-group label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
     }
 
     .input-field {
       width: 100%;
-      padding: 0.65rem 0.85rem;
+      padding: 0.75rem 0.85rem;
       background-color: #0f172a;
       border: 1px solid #334155;
       border-radius: 0.6rem;
       color: #f8fafc;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       outline: none;
+      resize: vertical;
+      min-height: 70px;
       transition: all 0.2s ease;
     }
 
     .input-field:focus {
       border-color: #6366f1;
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-
-    .input-field.error-border {
-      border-color: #f43f5e;
     }
 
     .error-text {
@@ -128,7 +106,7 @@
       background-color: #4338ca;
     }
 
-    .links-header {
+    .list-header {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -137,8 +115,8 @@
       margin-bottom: 1rem;
     }
 
-    @media (min-width: 640px) {
-      .links-header {
+    @media (min-width: 500px) {
+      .list-header {
         flex-direction: row;
         align-items: center;
       }
@@ -158,9 +136,9 @@
       width: 100%;
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 500px) {
       .search-wrapper {
-        width: 240px;
+        width: 200px;
       }
     }
 
@@ -193,92 +171,53 @@
     .item-list {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
-    }
-
-    .record-card {
-      background-color: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 0.75rem;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      position: relative;
-    }
-
-    .record-grid {
-      display: grid;
-      grid-template-columns: 1fr;
       gap: 0.75rem;
     }
 
-    @media (min-width: 768px) {
-      .record-grid {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-    }
-
-    .field-box {
-      background-color: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 0.5rem;
-      padding: 0.6rem 0.75rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.4rem;
-    }
-
-    .field-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .field-content {
+    .text-card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+      padding: 0.85rem 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
-      word-break: break-word;
+      gap: 1rem;
+      transition: border-color 0.2s ease;
     }
 
-    .field-text {
-      font-size: 0.85rem;
+    .text-card:hover {
+      border-color: #475569;
+    }
+
+    .text-content {
+      font-size: 0.9rem;
       color: #e2e8f0;
-      line-height: 1.3;
+      line-height: 1.4;
+      word-break: break-word;
+      white-space: pre-wrap;
+      flex: 1;
     }
 
-    .field-link {
-      font-size: 0.85rem;
-      color: #818cf8;
-      text-decoration: none;
-      word-break: break-all;
-      display: inline-flex;
+    .action-group {
+      display: flex;
       align-items: center;
-      gap: 0.25rem;
-    }
-
-    .field-link:hover {
-      text-decoration: underline;
+      gap: 0.4rem;
+      flex-shrink: 0;
     }
 
     .btn-copy {
-      padding: 0.3rem 0.6rem;
+      padding: 0.4rem 0.75rem;
       background-color: #334155;
       color: #cbd5e1;
       border: 1px solid #475569;
-      border-radius: 0.4rem;
+      border-radius: 0.5rem;
       font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      flex-shrink: 0;
+      gap: 0.35rem;
       transition: all 0.2s ease;
     }
 
@@ -294,25 +233,16 @@
       border-color: #10b981;
     }
 
-    .record-actions {
-      display: flex;
-      justify-content: flex-end;
-      border-top: 1px solid #334155;
-      padding-top: 0.5rem;
-      margin-top: 0.1rem;
-    }
-
     .btn-delete {
-      padding: 0.3rem 0.6rem;
+      padding: 0.4rem;
       background-color: transparent;
       color: #64748b;
       border: 1px solid transparent;
-      border-radius: 0.4rem;
+      border-radius: 0.5rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      font-size: 0.75rem;
+      justify-content: center;
       transition: all 0.2s ease;
     }
 
@@ -336,48 +266,32 @@
 
   <div class="container">
 
-    <!-- Add Item Form Card -->
+    <!-- Add Text Input Card -->
     <div class="card">
       <div class="card-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        Add Entry
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Add Text
       </div>
 
-      <form id="add-entry-form">
-        <div class="form-grid">
-          <!-- Column 1: Link -->
-          <div class="input-group">
-            <label for="url-input">Link (URL)</label>
-            <input type="text" id="url-input" class="input-field" placeholder="e.g. https://github.com" />
-          </div>
-
-          <!-- Column 2: Description -->
-          <div class="input-group">
-            <label for="desc-input">Description</label>
-            <input type="text" id="desc-input" class="input-field" placeholder="e.g. Code repository platform" />
-          </div>
-
-          <!-- Column 3: Text -->
-          <div class="input-group">
-            <label for="text-input">Text</label>
-            <input type="text" id="text-input" class="input-field" placeholder="e.g. API Keys / Notes / Snippets" />
-          </div>
+      <form id="add-text-form">
+        <div class="input-group">
+          <textarea id="text-input" class="input-field" placeholder="Type or paste text here..."></textarea>
         </div>
 
         <div id="error-msg" class="error-text"></div>
 
         <button type="submit" class="btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Add Record
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add Text
         </button>
       </form>
     </div>
 
-    <!-- Records Display Card -->
+    <!-- Saved Text Items Card -->
     <div class="card">
-      <div class="links-header">
+      <div class="list-header">
         <div class="card-title" style="margin-bottom: 0;">
-          Saved Items
+          Saved Text
           <span id="counter-badge" class="counter-badge">0</span>
         </div>
 
@@ -385,27 +299,25 @@
           <span class="search-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </span>
-          <input type="text" id="search-input" class="search-input" placeholder="Search entries..." />
+          <input type="text" id="search-input" class="search-input" placeholder="Search text..." />
         </div>
       </div>
 
       <div id="item-list" class="item-list"></div>
       <div id="empty-state" class="empty-state" style="display: none;">
-        <p id="empty-text">No entries saved yet. Fill in the fields above to save an item!</p>
+        <p id="empty-text">No text entries saved yet. Add your first text item above!</p>
       </div>
     </div>
 
   </div>
 
   <script>
-    // --- Application State ---
-    let records = [];
+    // --- State Management ---
+    let items = [];
     let searchQuery = '';
 
-    // --- DOM Elements ---
-    const form = document.getElementById('add-entry-form');
-    const urlInput = document.getElementById('url-input');
-    const descInput = document.getElementById('desc-input');
+    // --- DOM Handles ---
+    const form = document.getElementById('add-text-form');
     const textInput = document.getElementById('text-input');
     const errorMsg = document.getElementById('error-msg');
     const itemListContainer = document.getElementById('item-list');
@@ -415,9 +327,9 @@
     const searchWrapper = document.getElementById('search-wrapper');
     const searchInput = document.getElementById('search-input');
 
-    const STORAGE_KEY = 'multi_column_manager_items';
+    const STORAGE_KEY = 'plain_text_keeper_items';
 
-    // --- LocalStorage Helpers ---
+    // --- LocalStorage Logic ---
     function loadFromStorage() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -428,31 +340,14 @@
         }
       }
       return [
-        {
-          id: '1',
-          url: 'https://react.dev',
-          description: 'Official documentation for React',
-          text: 'npx create-react-app my-app'
-        },
-        {
-          id: '2',
-          url: 'https://github.com',
-          description: 'GitHub source code hosting',
-          text: 'git push origin main'
-        }
+        { id: '1', text: 'git push origin main' },
+        { id: '2', text: 'npx create-react-app my-app' },
+        { id: '3', text: 'Important Note: Remember to update API keys' }
       ];
     }
 
     function saveToStorage() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    }
-
-    function formatUrl(string) {
-      if (!string) return '';
-      if (!string.startsWith('http://') && !string.startsWith('https://')) {
-        return `https://${string}`;
-      }
-      return string;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }
 
     function escapeHtml(str) {
@@ -468,96 +363,43 @@
       });
     }
 
+    // --- Render Logic ---
     function render() {
-      counterBadge.textContent = records.length;
+      counterBadge.textContent = items.length;
 
-      if (records.length > 0) {
+      if (items.length > 0) {
         searchWrapper.style.display = 'block';
       } else {
         searchWrapper.style.display = 'none';
       }
 
-      const filtered = records.filter(item =>
-        (item.url && item.url.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (item.text && item.text.toLowerCase().includes(searchQuery.toLowerCase()))
+      const filtered = items.filter(item =>
+        item.text && item.text.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
       itemListContainer.innerHTML = '';
 
       if (filtered.length === 0) {
         emptyState.style.display = 'block';
-        emptyText.textContent = records.length === 0
-          ? 'No entries saved yet. Fill in the fields above to save an item!'
-          : 'No matching entries found.';
+        emptyText.textContent = items.length === 0
+          ? 'No text entries saved yet. Add your first text item above!'
+          : 'No matching text found.';
       } else {
         emptyState.style.display = 'none';
 
         filtered.forEach(item => {
           const card = document.createElement('div');
-          card.className = 'record-card';
-
-          const formattedUrl = formatUrl(item.url);
+          card.className = 'text-card';
 
           card.innerHTML = `
-            <div class="record-grid">
-              <!-- Link Column Section -->
-              <div class="field-box">
-                <span class="field-label">Link</span>
-                <div class="field-content">
-                  ${formattedUrl 
-                    ? `<a href="${escapeHtml(formattedUrl)}" target="_blank" rel="noopener noreferrer" class="field-link">
-                        ${escapeHtml(item.url)}
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                       </a>`
-                    : `<span class="field-text" style="opacity: 0.4;">—</span>`
-                  }
-                  ${formattedUrl 
-                    ? `<button class="btn-copy" data-copy="${escapeHtml(formattedUrl)}">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        Copy
-                       </button>` 
-                    : ''
-                  }
-                </div>
-              </div>
-
-              <!-- Description Column Section -->
-              <div class="field-box">
-                <span class="field-label">Description</span>
-                <div class="field-content">
-                  <span class="field-text">${item.description ? escapeHtml(item.description) : '<span style="opacity: 0.4;">—</span>'}</span>
-                  ${item.description 
-                    ? `<button class="btn-copy" data-copy="${escapeHtml(item.description)}">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        Copy
-                       </button>` 
-                    : ''
-                  }
-                </div>
-              </div>
-
-              <!-- Text Column Section -->
-              <div class="field-box">
-                <span class="field-label">Text</span>
-                <div class="field-content">
-                  <span class="field-text">${item.text ? escapeHtml(item.text) : '<span style="opacity: 0.4;">—</span>'}</span>
-                  ${item.text 
-                    ? `<button class="btn-copy" data-copy="${escapeHtml(item.text)}">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        Copy
-                       </button>` 
-                    : ''
-                  }
-                </div>
-              </div>
-            </div>
-
-            <!-- Record Actions -->
-            <div class="record-actions">
-              <button class="btn-delete" data-id="${item.id}">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                Delete Record
+            <div class="text-content">${escapeHtml(item.text)}</div>
+            <div class="action-group">
+              <button class="btn-copy" data-copy="${escapeHtml(item.text)}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copy
+              </button>
+              <button class="btn-delete" data-id="${item.id}" title="Delete">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               </button>
             </div>
           `;
@@ -567,32 +409,27 @@
       }
     }
 
+    // --- Form Handlers ---
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       showError('');
 
-      const rawUrl = urlInput.value.trim();
-      const rawDesc = descInput.value.trim();
       const rawText = textInput.value.trim();
 
-      if (!rawUrl && !rawDesc && !rawText) {
-        showError('Please enter at least one field (Link, Description, or Text).');
+      if (!rawText) {
+        showError('Please enter some text before adding.');
         return;
       }
 
-      const newRecord = {
+      const newItem = {
         id: Date.now().toString(),
-        url: rawUrl,
-        description: rawDesc,
         text: rawText
       };
 
-      records.unshift(newRecord);
+      items.unshift(newItem);
       saveToStorage();
       render();
 
-      urlInput.value = '';
-      descInput.value = '';
       textInput.value = '';
     });
 
@@ -614,38 +451,46 @@
       }
     });
 
+    // --- Copy Functionality ---
     function handleCopy(button, text) {
-      navigator.clipboard.writeText(text).then(() => {
-        setCopySuccess(button);
-      }).catch(() => {
-        // Fallback copy method
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        setCopySuccess(button);
-      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          setCopySuccess(button);
+        }).catch(() => {
+          fallbackCopy(button, text);
+        });
+      } else {
+        fallbackCopy(button, text);
+      }
+    }
+
+    function fallbackCopy(button, text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopySuccess(button);
     }
 
     function setCopySuccess(button) {
       button.classList.add('copied');
       button.innerHTML = `
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
         Copied!
       `;
       setTimeout(() => {
         button.classList.remove('copied');
         button.innerHTML = `
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy
         `;
       }, 1800);
     }
 
     function handleDelete(id) {
-      records = records.filter(item => item.id !== id);
+      items = items.filter(item => item.id !== id);
       saveToStorage();
       render();
     }
@@ -660,9 +505,9 @@
       }
     }
 
-    // --- Startup ---
+    // --- Initial Launch ---
     window.onload = function() {
-      records = loadFromStorage();
+      items = loadFromStorage();
       render();
     };
   </script>
